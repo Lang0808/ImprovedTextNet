@@ -27,7 +27,7 @@ func Register(ctx context.Context, request *RegisterUserRequest) (*RegisterUserR
 	password, err := utils.Hash(request.Password)
 	if err != nil {
 		fmt.Printf("Hash password fail. Error: %v", err)
-		return nil, errors.New("Hash Password fail")
+		return nil, errors.New(fmt.Sprintf("Hash Password fail. Error: %v", err))
 	}
 	passwordTemp := sql.NullString{
 		String: password,
@@ -45,7 +45,7 @@ func Register(ctx context.Context, request *RegisterUserRequest) (*RegisterUserR
 	err = UserDB.CreateUser(ctx, in)
 	if err != nil {
 		fmt.Printf("UserDB.CreateUser fail. Error: %v", err)
-		return nil, errors.New("Create User fail")
+		return nil, errors.New(fmt.Sprint("Create User fail. Error: %v", err))
 	}
 	return &RegisterUserResponse{}, nil
 }

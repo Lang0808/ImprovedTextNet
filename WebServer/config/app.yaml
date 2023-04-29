@@ -3,5 +3,6 @@ test:
   test: test
 server:
   host: 0.0.0.0:9001
+  JWTPrivateKey: WaitingForYou
 UserService:
   host: 0.0.0.0:9002

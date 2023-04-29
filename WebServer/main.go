@@ -1,11 +1,13 @@
 package main
 
 import (
-	GrpcUserService "WebServer/clients/UserService"
-	handler "WebServer/handler"
 	"WebServer/utils"
 	"fmt"
 	"net/http"
+
+	GrpcUserService "WebServer/clients/UserService"
+
+	handler "WebServer/handler"
 
 	"github.com/spf13/viper"
 )
@@ -31,11 +33,11 @@ func main() {
 	}
 	fmt.Printf("Initialize connection to UserService done\n")
 	http.HandleFunc("/api/RegisterUser", handler.RegisterUser)
+	http.HandleFunc("/api/LoginUser", handler.LoginUser)
 	host := viper.GetString("server.host")
 	fmt.Printf("Server is listening at %v\n", host)
 	if err := http.ListenAndServe(host, nil); err != nil {
 		fmt.Printf("Listen to request fail. Error: %v\b", err)
 		return
 	}
-
 }
