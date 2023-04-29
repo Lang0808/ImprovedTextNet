@@ -1,0 +1,7 @@
+# unit test read config
+test:
+  test: test
+server:
+  host: 0.0.0.0:9001
+UserService:
+  host: 0.0.0.0:9002
