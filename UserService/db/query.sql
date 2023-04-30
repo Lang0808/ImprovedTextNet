@@ -8,4 +8,3 @@ SELECT * FROM users WHERE Username=?;
 
 -- name: GetUserFromUserId :one
 SELECT * FROM users WHERE Id=?;
-

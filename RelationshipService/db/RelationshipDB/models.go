@@ -2,21 +2,12 @@
 // versions:
 //   sqlc v1.14.0
 
-package UserDB
+package RelationshipDB
 
-import (
-	"database/sql"
-)
+import ()
 
 type Relationship struct {
 	Useridfrom   int32
 	Useridto     int32
 	Relationship int32
-}
-
-type User struct {
-	ID       sql.NullInt32
-	Username string
-	Avatar   sql.NullString
-	Password sql.NullString
 }

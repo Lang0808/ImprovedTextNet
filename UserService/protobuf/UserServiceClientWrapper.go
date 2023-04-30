@@ -28,3 +28,7 @@ func LoginUser(ctx context.Context, in *LoginUserRequest, opts ...grpc.CallOptio
 func RegisterUser(ctx context.Context, in *RegisterUserRequest, opts ...grpc.CallOption) (*RegisterUserResponse, error) {
 	return client.RegisterUser(ctx, in)
 }
+
+func AddOrUpdateRelationship(ctx context.Context, in *AddOrUpdateRelationshipRequest, opts ...grpc.CallOption) (*AddOrUpdateRelationshipResponse, error) {
+	return client.AddOrUpdateRelationship(ctx, in)
+}

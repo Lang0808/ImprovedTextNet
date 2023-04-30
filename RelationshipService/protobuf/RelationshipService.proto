@@ -1,42 +1,16 @@
 syntax="proto3";
 
-option go_package="./GrpcUserService";
-
-message RegisterUserRequest {
-    string Username=1;
-    string Password=2;
-}
-
-message LoginUserRequest {
-    string Username=1;
-    string Password=2;
-}
-
-message RegisterUserResponse {
-
-}
-
-message LoginUserResponse {
-    int32 UserId=1;
-    string Username=2;
-    string Avatar=3;
-}
+option go_package="./GrpcRelationshipService";
 
 enum RelationshipType {
-    FOLLOW=0;
-    BLOCK=1;
-    FRIEND=2;
-    NONE=3;
-}
-
-message AddOrUpdateRelationshipRequest {
-    int32 UserIdFrom=1;
-    int32 UserIdTo=2;
-    RelationshipType Relationship=3;
-}
-
-message AddOrUpdateRelationshipResponse {
-
+    NONE=0;
+    FRIEND=1;
+    FOLLOWING=2;
+    FOLLOWED=3;
+    BLOCKING=4;
+    BLOCKED=5;
+    SENT_REQUEST=6;
+    RECEIVED_REQUEST=7;
 }
 
 message SendFriendRequestRequest {
@@ -112,14 +86,12 @@ message UnfriendUserResponse {
     
 }
 
-service UserService {
-    rpc LoginUser(LoginUserRequest) returns (LoginUserResponse);
-    rpc RegisterUser(RegisterUserRequest) returns (RegisterUserResponse);
+service RelationshipService {
     rpc SendFriendRequest (SendFriendRequestRequest) returns (SendFriendRequestResponse);
     rpc AcceptFriendRequest (AcceptFriendRequestRequest) returns (AcceptFriendRequestResponse);
     rpc RemoveFriendRequest (RemoveFriendRequestRequest) returns (RemoveFriendRequestResponse);
     rpc BlockUser (BlockUserRequest) returns (BlockUserResponse);
     rpc UnblockUser (UnblockUserRequest) returns (UnblockUserResponse);
     rpc FollowUser (FollowUserRequest) returns (FollowUserResponse);
-    rpc UnfollowUser (UnfollowUserRequest) returns (UnfollowUserResponse)
+    rpc UnfollowUser (UnfollowUserRequest) returns (UnfollowUserResponse);
 }

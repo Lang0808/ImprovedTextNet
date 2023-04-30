@@ -14,6 +14,7 @@ func (u UserServiceServerImpl) LoginUser(ctx context.Context, request *LoginUser
 func (u UserServiceServerImpl) RegisterUser(ctx context.Context, request *RegisterUserRequest) (*RegisterUserResponse, error) {
 	return Register(ctx, request)
 }
+
 func (u UserServiceServerImpl) mustEmbedUnimplementedUserServiceServer() {
 
 }

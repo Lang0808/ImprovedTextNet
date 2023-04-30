@@ -10,6 +10,29 @@ import (
 	"database/sql"
 )
 
+const addOrUpdateRelationships = `-- name: AddOrUpdateRelationships :execresult
+INSERT INTO relationships (UserIdFrom, UserIdTo, Relationship) 
+VALUES(?, ?, ?) 
+ON DUPLICATE KEY UPDATE    
+Relationship=?
+`
+
+type AddOrUpdateRelationshipsParams struct {
+	Useridfrom     int32
+	Useridto       int32
+	Relationship   int32
+	Relationship_2 int32
+}
+
+func (q *Queries) AddOrUpdateRelationships(ctx context.Context, arg AddOrUpdateRelationshipsParams) (sql.Result, error) {
+	return q.db.ExecContext(ctx, addOrUpdateRelationships,
+		arg.Useridfrom,
+		arg.Useridto,
+		arg.Relationship,
+		arg.Relationship_2,
+	)
+}
+
 const createUser = `-- name: CreateUser :execresult
 INSERT INTO users (Username, Avatar, Password)
 VALUES
@@ -24,6 +47,22 @@ type CreateUserParams struct {
 
 func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (sql.Result, error) {
 	return q.db.ExecContext(ctx, createUser, arg.Username, arg.Avatar, arg.Password)
+}
+
+const getRelationship = `-- name: GetRelationship :one
+SELECT useridfrom, useridto, relationship FROM relationships WHERE UserIdFrom=? AND UserIdTo=?
+`
+
+type GetRelationshipParams struct {
+	Useridfrom int32
+	Useridto   int32
+}
+
+func (q *Queries) GetRelationship(ctx context.Context, arg GetRelationshipParams) (Relationship, error) {
+	row := q.db.QueryRowContext(ctx, getRelationship, arg.Useridfrom, arg.Useridto)
+	var i Relationship
+	err := row.Scan(&i.Useridfrom, &i.Useridto, &i.Relationship)
+	return i, err
 }
 
 const getUserFromUserId = `-- name: GetUserFromUserId :one
@@ -56,4 +95,17 @@ func (q *Queries) GetUserFromUsername(ctx context.Context, username string) (Use
 		&i.Password,
 	)
 	return i, err
+}
+
+const removeRelationship = `-- name: RemoveRelationship :execresult
+DELETE FROM relationships WHERE UserIdFrom=? AND UserIdTo=?
+`
+
+type RemoveRelationshipParams struct {
+	Useridfrom int32
+	Useridto   int32
+}
+
+func (q *Queries) RemoveRelationship(ctx context.Context, arg RemoveRelationshipParams) (sql.Result, error) {
+	return q.db.ExecContext(ctx, removeRelationship, arg.Useridfrom, arg.Useridto)
 }

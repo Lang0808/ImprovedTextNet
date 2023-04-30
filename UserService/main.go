@@ -3,12 +3,11 @@ package main
 import (
 	"fmt"
 	"log"
-
-	"UserService/db/UserDB"
-	utils "UserService/utils"
 	"net"
 
+	UserDB "UserService/db/UserDB"
 	GrpcUserService "UserService/protobuf"
+	utils "UserService/utils"
 
 	"github.com/spf13/viper"
 	"google.golang.org/grpc"
@@ -24,6 +23,7 @@ func initProject() (err error) {
 }
 
 func main() {
+
 	err := initProject()
 	if err != nil {
 		return
