@@ -1,4 +1,4 @@
-package GrpcUserService
+package GrpcRelationshipService
 
 import (
 	context "context"
@@ -8,12 +8,12 @@ import (
 type RelationshipServiceServerImpl struct {
 }
 
-func (r RelationshipServiceServerImpl) SendFriendRequest(context.Context, *SendFriendRequestRequest) (*SendFriendRequestResponse, error) {
-	return nil, errors.New("Unsupported.")
+func (r RelationshipServiceServerImpl) SendFriendRequest(ctx context.Context, req *SendFriendRequestRequest) (*SendFriendRequestResponse, error) {
+	return SendFriendRequest_Server(ctx, req)
 }
 
-func (r RelationshipServiceServerImpl) AcceptFriendRequest(context.Context, *AcceptFriendRequestRequest) (*AcceptFriendRequestResponse, error) {
-	return nil, errors.New("Unsupported.")
+func (r RelationshipServiceServerImpl) AcceptFriendRequest(ctx context.Context, req *AcceptFriendRequestRequest) (*AcceptFriendRequestResponse, error) {
+	return AcceptFriendRequest_Server(ctx, req)
 }
 
 func (r RelationshipServiceServerImpl) RemoveFriendRequest(context.Context, *RemoveFriendRequestRequest) (*RemoveFriendRequestResponse, error) {
@@ -37,5 +37,5 @@ func (r RelationshipServiceServerImpl) UnfollowUser(context.Context, *UnfollowUs
 }
 
 func (r RelationshipServiceServerImpl) mustEmbedUnimplementedRelationshipServiceServer() {
-	return nil, errors.New("Unsupported.")
+
 }

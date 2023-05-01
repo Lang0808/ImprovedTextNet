@@ -50,5 +50,5 @@ func GetAllUserTo(ctx context.Context, in GetAllUserToParams) ([]Relationship, e
 
 func RemoveRelationship(ctx context.Context, in RemoveRelationshipParams) (sql.Result, error) {
 	queries := New(db)
-	return queries.GetAllUserTo(ctx, in)
+	return queries.RemoveRelationship(ctx, in)
 }

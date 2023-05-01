@@ -1,4 +1,4 @@
-package GrpcUserService
+package GrpcRelationshipService
 
 import (
 	"context"
@@ -22,29 +22,29 @@ func InitConnection() error {
 }
 
 func SendFriendRequest(ctx context.Context, in *SendFriendRequestRequest, opts ...grpc.CallOption) (*SendFriendRequestResponse, error) {
-	return client.SendFriendRequest(ctx, in, opts)
+	return client.SendFriendRequest(ctx, in)
 }
 
 func AcceptFriendRequest(ctx context.Context, in *AcceptFriendRequestRequest, opts ...grpc.CallOption) (*AcceptFriendRequestResponse, error) {
-	return client.AcceptFriendRequest(ctx, in, opts)
+	return client.AcceptFriendRequest(ctx, in)
 }
 
 func RemoveFriendRequest(ctx context.Context, in *RemoveFriendRequestRequest, opts ...grpc.CallOption) (*RemoveFriendRequestResponse, error) {
-	return client.RemoveFriendRequest(ctx, in, opts)
+	return client.RemoveFriendRequest(ctx, in)
 }
 
 func BlockUser(ctx context.Context, in *BlockUserRequest, opts ...grpc.CallOption) (*BlockUserResponse, error) {
-	return client.BlockUser(ctx, in, opts)
+	return client.BlockUser(ctx, in)
 }
 
 func UnblockUser(ctx context.Context, in *UnblockUserRequest, opts ...grpc.CallOption) (*UnblockUserResponse, error) {
-	return client.UnblockUser(ctx, in, opts)
+	return client.UnblockUser(ctx, in)
 }
 
 func FollowUser(ctx context.Context, in *FollowUserRequest, opts ...grpc.CallOption) (*FollowUserResponse, error) {
-	return client.FollowUser(ctx, in, opts)
+	return client.FollowUser(ctx, in)
 }
 
 func UnfollowUser(ctx context.Context, in *UnfollowUserRequest, opts ...grpc.CallOption) (*UnfollowUserResponse, error) {
-	return client.UnfollowUser(ctx, in, opts)
+	return client.UnfollowUser(ctx, in)
 }
