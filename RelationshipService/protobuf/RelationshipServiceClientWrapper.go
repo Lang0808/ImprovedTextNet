@@ -48,3 +48,11 @@ func FollowUser(ctx context.Context, in *FollowUserRequest, opts ...grpc.CallOpt
 func UnfollowUser(ctx context.Context, in *UnfollowUserRequest, opts ...grpc.CallOption) (*UnfollowUserResponse, error) {
 	return client.UnfollowUser(ctx, in)
 }
+
+func UnfriendUser(ctx context.Context, in *UnfriendUserRequest, opts ...grpc.CallOption) (*UnfriendUserResponse, error) {
+	return client.UnfriendUser(ctx, in)
+}
+
+func GetRelationship(ctx context.Context, in *GetRelationshipRequest, opts ...grpc.CallOption) (*GetRelationshipResponse, error) {
+	return client.GetRelationship(ctx, in)
+}

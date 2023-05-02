@@ -2,7 +2,6 @@ package GrpcRelationshipService
 
 import (
 	context "context"
-	"errors"
 )
 
 type RelationshipServiceServerImpl struct {
@@ -16,24 +15,32 @@ func (r RelationshipServiceServerImpl) AcceptFriendRequest(ctx context.Context, 
 	return AcceptFriendRequest_Server(ctx, req)
 }
 
-func (r RelationshipServiceServerImpl) RemoveFriendRequest(context.Context, *RemoveFriendRequestRequest) (*RemoveFriendRequestResponse, error) {
-	return nil, errors.New("Unsupported.")
+func (r RelationshipServiceServerImpl) RemoveFriendRequest(ctx context.Context, req *RemoveFriendRequestRequest) (*RemoveFriendRequestResponse, error) {
+	return RemoveFriendRequest_Server(ctx, req)
 }
 
-func (r RelationshipServiceServerImpl) BlockUser(context.Context, *BlockUserRequest) (*BlockUserResponse, error) {
-	return nil, errors.New("Unsupported.")
+func (r RelationshipServiceServerImpl) BlockUser(ctx context.Context, req *BlockUserRequest) (*BlockUserResponse, error) {
+	return BlockUser_Server(ctx, req)
 }
 
-func (r RelationshipServiceServerImpl) UnblockUser(context.Context, *UnblockUserRequest) (*UnblockUserResponse, error) {
-	return nil, errors.New("Unsupported.")
+func (r RelationshipServiceServerImpl) UnblockUser(ctx context.Context, req *UnblockUserRequest) (*UnblockUserResponse, error) {
+	return UnblockUser_Server(ctx, req)
 }
 
-func (r RelationshipServiceServerImpl) FollowUser(context.Context, *FollowUserRequest) (*FollowUserResponse, error) {
-	return nil, errors.New("Unsupported.")
+func (r RelationshipServiceServerImpl) FollowUser(ctx context.Context, req *FollowUserRequest) (*FollowUserResponse, error) {
+	return FollowUser_Server(ctx, req)
 }
 
-func (r RelationshipServiceServerImpl) UnfollowUser(context.Context, *UnfollowUserRequest) (*UnfollowUserResponse, error) {
-	return nil, errors.New("Unsupported.")
+func (r RelationshipServiceServerImpl) UnfollowUser(ctx context.Context, req *UnfollowUserRequest) (*UnfollowUserResponse, error) {
+	return UnfollowUser_Server(ctx, req)
+}
+
+func (r RelationshipServiceServerImpl) UnfriendUser(ctx context.Context, req *UnfriendUserRequest) (*UnfriendUserResponse, error) {
+	return UnfriendUser_Server(ctx, req)
+}
+
+func (r RelationshipServiceServerImpl) GetRelationship(ctx context.Context, req *GetRelationshipRequest) (*GetRelationshipResponse, error) {
+	return GetRelationship_Server(ctx, req)
 }
 
 func (r RelationshipServiceServerImpl) mustEmbedUnimplementedRelationshipServiceServer() {

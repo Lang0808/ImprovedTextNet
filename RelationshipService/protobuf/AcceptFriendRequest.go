@@ -18,7 +18,7 @@ func AcceptFriendRequest_Server(ctx context.Context, req *AcceptFriendRequestReq
 		if relationship.Relationship == RelationshipType_value[RelationshipType_BLOCKED.String()] {
 			return nil, errors.New("User from is blocked by user to")
 		}
-		if relationship.Relationship == RelationshipType_value[RelationshipType_BLOCKED.String()] {
+		if relationship.Relationship == RelationshipType_value[RelationshipType_BLOCKING.String()] {
 			return nil, errors.New("User from is blocking user to. Please unblock before accept friend request")
 		}
 		if relationship.Relationship == RelationshipType_value[RelationshipType_FRIEND.String()] {

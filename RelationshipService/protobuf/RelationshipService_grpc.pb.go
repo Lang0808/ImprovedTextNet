@@ -29,6 +29,8 @@ type RelationshipServiceClient interface {
 	UnblockUser(ctx context.Context, in *UnblockUserRequest, opts ...grpc.CallOption) (*UnblockUserResponse, error)
 	FollowUser(ctx context.Context, in *FollowUserRequest, opts ...grpc.CallOption) (*FollowUserResponse, error)
 	UnfollowUser(ctx context.Context, in *UnfollowUserRequest, opts ...grpc.CallOption) (*UnfollowUserResponse, error)
+	UnfriendUser(ctx context.Context, in *UnfriendUserRequest, opts ...grpc.CallOption) (*UnfriendUserResponse, error)
+	GetRelationship(ctx context.Context, in *GetRelationshipRequest, opts ...grpc.CallOption) (*GetRelationshipResponse, error)
 }
 
 type relationshipServiceClient struct {
@@ -102,6 +104,24 @@ func (c *relationshipServiceClient) UnfollowUser(ctx context.Context, in *Unfoll
 	return out, nil
 }
 
+func (c *relationshipServiceClient) UnfriendUser(ctx context.Context, in *UnfriendUserRequest, opts ...grpc.CallOption) (*UnfriendUserResponse, error) {
+	out := new(UnfriendUserResponse)
+	err := c.cc.Invoke(ctx, "/RelationshipService/UnfriendUser", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *relationshipServiceClient) GetRelationship(ctx context.Context, in *GetRelationshipRequest, opts ...grpc.CallOption) (*GetRelationshipResponse, error) {
+	out := new(GetRelationshipResponse)
+	err := c.cc.Invoke(ctx, "/RelationshipService/GetRelationship", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // RelationshipServiceServer is the server API for RelationshipService service.
 // All implementations must embed UnimplementedRelationshipServiceServer
 // for forward compatibility
@@ -113,6 +133,8 @@ type RelationshipServiceServer interface {
 	UnblockUser(context.Context, *UnblockUserRequest) (*UnblockUserResponse, error)
 	FollowUser(context.Context, *FollowUserRequest) (*FollowUserResponse, error)
 	UnfollowUser(context.Context, *UnfollowUserRequest) (*UnfollowUserResponse, error)
+	UnfriendUser(context.Context, *UnfriendUserRequest) (*UnfriendUserResponse, error)
+	GetRelationship(context.Context, *GetRelationshipRequest) (*GetRelationshipResponse, error)
 	mustEmbedUnimplementedRelationshipServiceServer()
 }
 
@@ -140,6 +162,12 @@ func (UnimplementedRelationshipServiceServer) FollowUser(context.Context, *Follo
 }
 func (UnimplementedRelationshipServiceServer) UnfollowUser(context.Context, *UnfollowUserRequest) (*UnfollowUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UnfollowUser not implemented")
+}
+func (UnimplementedRelationshipServiceServer) UnfriendUser(context.Context, *UnfriendUserRequest) (*UnfriendUserResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UnfriendUser not implemented")
+}
+func (UnimplementedRelationshipServiceServer) GetRelationship(context.Context, *GetRelationshipRequest) (*GetRelationshipResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetRelationship not implemented")
 }
 func (UnimplementedRelationshipServiceServer) mustEmbedUnimplementedRelationshipServiceServer() {}
 
@@ -280,6 +308,42 @@ func _RelationshipService_UnfollowUser_Handler(srv interface{}, ctx context.Cont
 	return interceptor(ctx, in, info, handler)
 }
 
+func _RelationshipService_UnfriendUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UnfriendUserRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RelationshipServiceServer).UnfriendUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/RelationshipService/UnfriendUser",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RelationshipServiceServer).UnfriendUser(ctx, req.(*UnfriendUserRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RelationshipService_GetRelationship_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetRelationshipRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RelationshipServiceServer).GetRelationship(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/RelationshipService/GetRelationship",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RelationshipServiceServer).GetRelationship(ctx, req.(*GetRelationshipRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // RelationshipService_ServiceDesc is the grpc.ServiceDesc for RelationshipService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -314,6 +378,14 @@ var RelationshipService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UnfollowUser",
 			Handler:    _RelationshipService_UnfollowUser_Handler,
+		},
+		{
+			MethodName: "UnfriendUser",
+			Handler:    _RelationshipService_UnfriendUser_Handler,
+		},
+		{
+			MethodName: "GetRelationship",
+			Handler:    _RelationshipService_GetRelationship_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
