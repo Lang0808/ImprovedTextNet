@@ -6,3 +6,5 @@ server:
   JWTPrivateKey: WaitingForYou
 UserService:
   host: 0.0.0.0:9002
+RelationshipService:
+  host: 0.0.0.0:9003

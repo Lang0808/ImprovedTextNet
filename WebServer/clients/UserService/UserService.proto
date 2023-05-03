@@ -22,25 +22,18 @@ message LoginUserResponse {
     string Avatar=3;
 }
 
-enum RelationshipType {
-    FOLLOW=0;
-    BLOCK=1;
-    FRIEND=2;
-    NONE=3;
+message GetUserInfoResponse {
+    int32 UserId=1;
+    string Username=2;
+    string Avatar=3;
 }
 
-message AddOrUpdateRelationshipRequest {
-    int32 UserIdFrom=1;
-    int32 UserIdTo=2;
-    RelationshipType Relationship=3;
-}
-
-message AddOrUpdateRelationshipResponse {
-
+message GetUserInfoRequest {
+    int32 UserId=1;
 }
 
 service UserService {
     rpc LoginUser(LoginUserRequest) returns (LoginUserResponse);
     rpc RegisterUser(RegisterUserRequest) returns (RegisterUserResponse);
-    rpc AddOrUpdateRelationship(AddOrUpdateRelationshipRequest) returns (AddOrUpdateRelationshipResponse);
+    rpc GetUserInfo(GetUserInfoRequest) returns (GetUserInfoResponse);
 }

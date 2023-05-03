@@ -15,6 +15,10 @@ func (u UserServiceServerImpl) RegisterUser(ctx context.Context, request *Regist
 	return Register(ctx, request)
 }
 
+func (u UserServiceServerImpl) GetUserInfo(ctx context.Context, req *GetUserInfoRequest) (*GetUserInfoResponse, error) {
+	return GetUserInfo_Server(ctx, req)
+}
+
 func (u UserServiceServerImpl) mustEmbedUnimplementedUserServiceServer() {
 
 }

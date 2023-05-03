@@ -8,12 +8,6 @@ import (
 	"database/sql"
 )
 
-type Relationship struct {
-	Useridfrom   int32
-	Useridto     int32
-	Relationship int32
-}
-
 type User struct {
 	ID       sql.NullInt32
 	Username string

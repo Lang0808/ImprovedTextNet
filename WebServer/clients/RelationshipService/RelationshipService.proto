@@ -1,0 +1,108 @@
+syntax="proto3";
+
+option go_package="./GrpcRelationshipService";
+
+enum RelationshipType {
+    NONE=0;
+    FRIEND=1;
+    FOLLOWING=2;
+    FOLLOWED=3;
+    BLOCKING=4;
+    BLOCKED=5;
+    SENT_REQUEST=6;
+    RECEIVED_REQUEST=7;
+}
+
+message SendFriendRequestRequest {
+    int32 UserIdFrom=1;
+    int32 UserIdTo=2;
+}
+
+message SendFriendRequestResponse {
+
+}
+
+message AcceptFriendRequestRequest {
+    int32 UserIdFrom=1;
+    int32 UserIdTo=2;
+}
+
+message AcceptFriendRequestResponse {
+
+}
+
+message RemoveFriendRequestRequest {
+    int32 UserIdFrom=1;
+    int32 UserIdTo=2;
+}
+
+message RemoveFriendRequestResponse {
+
+}
+
+
+message BlockUserRequest {
+    int32 UserIdFrom=1;
+    int32 UserIdTo=2;
+}
+
+message BlockUserResponse {
+
+}
+
+message UnblockUserRequest {
+    int32 UserIdFrom=1;
+    int32 UserIdTo=2;
+}
+
+message UnblockUserResponse {
+
+}
+
+message FollowUserRequest {
+    int32 UserIdFrom=1;
+    int32 UserIdTo=2;
+}
+
+message FollowUserResponse {
+
+}
+
+message UnfollowUserRequest {
+    int32 UserIdFrom=1;
+    int32 UserIdTo=2;
+}
+
+message UnfollowUserResponse {
+
+}
+
+message UnfriendUserRequest {
+    int32 UserIdFrom=1;
+    int32 UserIdTo=2;
+}
+
+message UnfriendUserResponse {
+    
+}
+
+message GetRelationshipRequest {
+    int32 UserIdFrom=1;
+    int32 UserIdTo=2;
+}
+
+message GetRelationshipResponse {
+    repeated RelationshipType relationships=1;
+}
+
+service RelationshipService {
+    rpc SendFriendRequest (SendFriendRequestRequest) returns (SendFriendRequestResponse);
+    rpc AcceptFriendRequest (AcceptFriendRequestRequest) returns (AcceptFriendRequestResponse);
+    rpc RemoveFriendRequest (RemoveFriendRequestRequest) returns (RemoveFriendRequestResponse);
+    rpc BlockUser (BlockUserRequest) returns (BlockUserResponse);
+    rpc UnblockUser (UnblockUserRequest) returns (UnblockUserResponse);
+    rpc FollowUser (FollowUserRequest) returns (FollowUserResponse);
+    rpc UnfollowUser (UnfollowUserRequest) returns (UnfollowUserResponse);
+    rpc UnfriendUser(UnfriendUserRequest) returns (UnfriendUserResponse);
+    rpc GetRelationship (GetRelationshipRequest) returns (GetRelationshipResponse);
+}

@@ -30,17 +30,23 @@ func NoiseUserId(userId int32) int64 {
 	return ans
 }
 
-func DenoiseUserId(noisedUserId int64) int32 {
+func DenoiseUserId(noisedUserId int64) (int32, error) {
 	ans := int32(0)
 	for i := 0; i < 32; i = i + 1 {
 		indexes := CodeBoard[i]
 		index := indexes[0]
 		bit := GetBit64(noisedUserId, index)
+		for j := 0; j < len(indexes); j = j + 1 {
+			bit2 := GetBit64(noisedUserId, indexes[j])
+			if bit2 != bit {
+				return -1, errors.New("Error occurs when denoise user id")
+			}
+		}
 		if bit == 1 {
 			ans = OnBit32(ans, i)
 		}
 	}
-	return ans
+	return ans, nil
 }
 
 func CreateJWTToken(userId int32) (string, error) {
@@ -64,8 +70,12 @@ func GetUserIdInJWTToken(token string) (int32, error) {
 		return 0, err
 	}
 	if claims, ok := payload.Claims.(jwt.MapClaims); ok && payload.Valid {
-		NoisedUserId := claims["noisedUserId"].(int64)
-		return DenoiseUserId(NoisedUserId), nil
+		NoisedUserId := int64(claims["noisedUserId"].(float64))
+		UserId, err := DenoiseUserId(NoisedUserId)
+		if err != nil {
+			return -1, err
+		}
+		return UserId, nil
 	} else {
 		return 0, errors.New("Cannot get claims in JWT token")
 	}

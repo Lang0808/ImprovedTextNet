@@ -24,7 +24,7 @@ const _ = grpc.SupportPackageIsVersion7
 type UserServiceClient interface {
 	LoginUser(ctx context.Context, in *LoginUserRequest, opts ...grpc.CallOption) (*LoginUserResponse, error)
 	RegisterUser(ctx context.Context, in *RegisterUserRequest, opts ...grpc.CallOption) (*RegisterUserResponse, error)
-	AddOrUpdateRelationship(ctx context.Context, in *AddOrUpdateRelationshipRequest, opts ...grpc.CallOption) (*AddOrUpdateRelationshipResponse, error)
+	GetUserInfo(ctx context.Context, in *GetUserInfoRequest, opts ...grpc.CallOption) (*GetUserInfoResponse, error)
 }
 
 type userServiceClient struct {
@@ -53,9 +53,9 @@ func (c *userServiceClient) RegisterUser(ctx context.Context, in *RegisterUserRe
 	return out, nil
 }
 
-func (c *userServiceClient) AddOrUpdateRelationship(ctx context.Context, in *AddOrUpdateRelationshipRequest, opts ...grpc.CallOption) (*AddOrUpdateRelationshipResponse, error) {
-	out := new(AddOrUpdateRelationshipResponse)
-	err := c.cc.Invoke(ctx, "/UserService/AddOrUpdateRelationship", in, out, opts...)
+func (c *userServiceClient) GetUserInfo(ctx context.Context, in *GetUserInfoRequest, opts ...grpc.CallOption) (*GetUserInfoResponse, error) {
+	out := new(GetUserInfoResponse)
+	err := c.cc.Invoke(ctx, "/UserService/GetUserInfo", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -68,7 +68,7 @@ func (c *userServiceClient) AddOrUpdateRelationship(ctx context.Context, in *Add
 type UserServiceServer interface {
 	LoginUser(context.Context, *LoginUserRequest) (*LoginUserResponse, error)
 	RegisterUser(context.Context, *RegisterUserRequest) (*RegisterUserResponse, error)
-	AddOrUpdateRelationship(context.Context, *AddOrUpdateRelationshipRequest) (*AddOrUpdateRelationshipResponse, error)
+	GetUserInfo(context.Context, *GetUserInfoRequest) (*GetUserInfoResponse, error)
 	mustEmbedUnimplementedUserServiceServer()
 }
 
@@ -82,8 +82,8 @@ func (UnimplementedUserServiceServer) LoginUser(context.Context, *LoginUserReque
 func (UnimplementedUserServiceServer) RegisterUser(context.Context, *RegisterUserRequest) (*RegisterUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RegisterUser not implemented")
 }
-func (UnimplementedUserServiceServer) AddOrUpdateRelationship(context.Context, *AddOrUpdateRelationshipRequest) (*AddOrUpdateRelationshipResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method AddOrUpdateRelationship not implemented")
+func (UnimplementedUserServiceServer) GetUserInfo(context.Context, *GetUserInfoRequest) (*GetUserInfoResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUserInfo not implemented")
 }
 func (UnimplementedUserServiceServer) mustEmbedUnimplementedUserServiceServer() {}
 
@@ -134,20 +134,20 @@ func _UserService_RegisterUser_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
-func _UserService_AddOrUpdateRelationship_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(AddOrUpdateRelationshipRequest)
+func _UserService_GetUserInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUserInfoRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UserServiceServer).AddOrUpdateRelationship(ctx, in)
+		return srv.(UserServiceServer).GetUserInfo(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/UserService/AddOrUpdateRelationship",
+		FullMethod: "/UserService/GetUserInfo",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServiceServer).AddOrUpdateRelationship(ctx, req.(*AddOrUpdateRelationshipRequest))
+		return srv.(UserServiceServer).GetUserInfo(ctx, req.(*GetUserInfoRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -168,8 +168,8 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _UserService_RegisterUser_Handler,
 		},
 		{
-			MethodName: "AddOrUpdateRelationship",
-			Handler:    _UserService_AddOrUpdateRelationship_Handler,
+			MethodName: "GetUserInfo",
+			Handler:    _UserService_GetUserInfo_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
