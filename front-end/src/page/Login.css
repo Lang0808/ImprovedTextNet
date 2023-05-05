@@ -1,0 +1,75 @@
+#form-container {
+    display: flex;
+    flex-direction: column;
+    color: white;
+    width: 100%;
+    align-items: center;
+    text-align: center;
+    margin-top: 50px;
+}
+
+#login-section {
+    background-color: lightseagreen;
+    display: flex;
+    width: 100%;
+}
+
+#form-container > input {
+    width: 65%;
+    max-width: 300px;
+    margin: 10px 0px 10px 0px;
+    padding: 5px;
+    border-radius: 25px;
+}
+
+#container {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    
+}
+
+#container > div {
+    flex-basis: 50%;
+    flex-grow: 1;
+    min-width: 0;
+    height: 100%;
+}
+
+
+/* CSS */
+.button-89 {
+  --b: 3px;   /* border thickness */
+  --s: .45em; /* size of the corner */
+  --color: white;
+  
+  padding: calc(.5em + var(--s)) calc(.9em + var(--s));
+  color: var(--color);
+  --_p: var(--s);
+  background:
+    conic-gradient(from 90deg at var(--b) var(--b),#0000 90deg,var(--color) 0)
+    var(--_p) var(--_p)/calc(100% - var(--b) - 2*var(--_p)) calc(100% - var(--b) - 2*var(--_p));
+  transition: .3s linear, color 0s, background-color 0s;
+  outline: var(--b) solid #0000;
+  outline-offset: .6em;
+  font-size: 20px;
+
+  border: 0;
+  font-weight: bold;
+
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.button-89:hover,
+.button-89:focus-visible{
+  --_p: 0px;
+  outline-color: var(--color);
+  outline-offset: .05em;
+}
+
+.button-89:active {
+  background: var(--color);
+  color: #fff;
+}

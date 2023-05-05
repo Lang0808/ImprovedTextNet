@@ -17,6 +17,11 @@ type LoginResponse struct {
 }
 
 func LoginUser(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Credentials", "true")
+	w.Header().Set("Access-Control-Allow-Origin", viper.GetString("client.domain"))
+	w.Header().Set("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,UPDATE,OPTIONS")
+	w.Header().Set("Access-Control-Allow-Headers", "content-type")
+
 	Username := r.FormValue("Username")
 	Password := r.FormValue("Password")
 	in := &GrpcUserService.LoginUserRequest{
@@ -47,10 +52,7 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 		Value:   jwtToken,
 		Expires: time.Now().Add(2 * time.Hour),
 	}
-	w.Header().Set("Access-Control-Allow-Credentials", "true")
-	w.Header().Set("Access-Control-Allow-Origin", r.Header.Get("Origin"))
-	w.Header().Set("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,UPDATE,OPTIONS")
-	w.Header().Set("Access-Control-Allow-Headers", "content-type")
+
 	http.SetCookie(w, &cookie)
 	Data, err := utils.Marshal(data)
 	if err != nil {

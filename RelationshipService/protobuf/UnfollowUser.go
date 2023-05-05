@@ -21,7 +21,7 @@ func UnfollowUser_Server(ctx context.Context, req *UnfollowUserRequest) (*Unfoll
 			return nil, errors.New("User from is blocking user to. Please unblock before follow")
 		}
 		if relationship.Relationship == RelationshipType_value[RelationshipType_FOLLOWING.String()] {
-			return nil, errors.New("User from has already followed user to")
+			isFollowing = true
 		}
 	}
 	if isFollowing == false {
