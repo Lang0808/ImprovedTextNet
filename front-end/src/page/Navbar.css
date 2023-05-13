@@ -1,0 +1,23 @@
+#navbar-container {
+    display: flex;
+    flex-direction: row;
+    background-color: lightblue;
+    color: black;
+}
+
+#brand-container {
+    font-size: 20px;
+}
+
+.navbar-item{
+    font-size: 13px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.navbar-item:hover {
+    background-color: lightgray;
+}

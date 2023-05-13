@@ -14,6 +14,14 @@
     width: 100%;
 }
 
+#welcome-pic {
+  height: 100%;
+}
+
+#picture {
+  height: 100%;
+}
+
 #form-container > input {
     width: 65%;
     max-width: 300px;
@@ -72,4 +80,9 @@
 .button-89:active {
   background: var(--color);
   color: #fff;
+}
+
+#container {
+  height: 100vh;
+  overflow: hidden;
 }

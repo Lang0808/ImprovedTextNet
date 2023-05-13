@@ -1,0 +1,12 @@
+# unit test read config
+test:
+  test: test
+mysql:
+  host: localhost
+  port: 3306
+  username: root
+  password: Minhbao123
+  protocol: tcp
+  dbName: BlogDB
+server:
+  host: 0.0.0.0:9004

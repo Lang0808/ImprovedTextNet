@@ -9,6 +9,8 @@ import (
 
 	GrpcRelationshipService "WebServer/clients/RelationshipService"
 
+	GrpcBlogService "WebServer/clients/BlogService"
+
 	handler "WebServer/handler"
 
 	"github.com/spf13/viper"
@@ -38,6 +40,12 @@ func main() {
 	if err != nil {
 		return
 	}
+	fmt.Printf("Initialize connection to RelationshipService done\n")
+	err = GrpcBlogService.InitConnection()
+	if err != nil {
+		return
+	}
+	fmt.Printf("Initialize connection to BlogService done\n")
 	NoisedUserId := utils.NoiseUserId(1)
 	fmt.Printf("Noise user id 1: %v\n", NoisedUserId)
 	DenoisedUserId, err := utils.DenoiseUserId(NoisedUserId)
@@ -65,6 +73,7 @@ func main() {
 	http.HandleFunc("/api/FollowUser", handler.FollowUser)
 	http.HandleFunc("/api/BlockUser", handler.BlockUser)
 	http.HandleFunc("/api/UnblockUser", handler.UnblockUser)
+	http.HandleFunc("/api/CreateBlog", handler.CreateBlog)
 	host := viper.GetString("server.host")
 	fmt.Printf("Server is listening at %v\n", host)
 	if err := http.ListenAndServe(host, nil); err != nil {

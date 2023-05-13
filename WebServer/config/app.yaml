@@ -2,11 +2,14 @@
 test:
   test: test
 server:
-  host: 0.0.0.0:9001
+  host: localhost:9001
   JWTPrivateKey: WaitingForYou
 UserService:
   host: 0.0.0.0:9002
 RelationshipService:
   host: 0.0.0.0:9003
+BlogService:
+  host: 0.0.0.0:9004
 client:
   domain: http://localhost:3000
+  domainCookie: 127.0.0.1:9001

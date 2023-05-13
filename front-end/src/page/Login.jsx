@@ -55,7 +55,8 @@ function Login(){
         var config = {
             method: 'post',
             url: LOGIN_API,
-            data : data
+            data : data,
+            withCredentials: true
         };
         axios(config)
         .then(function (response) {
@@ -85,7 +86,7 @@ function Login(){
 
     return (
         <div id="container">
-            <div id="welcome-pic"><img src={login_picture} /></div>
+            <div id="welcome-pic"><img src={login_picture} id="picture"/></div>
             <div id="login-section">
                 <div id="form-container">
                     <h2>Welcome !</h2>

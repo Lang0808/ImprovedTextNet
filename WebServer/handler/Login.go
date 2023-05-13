@@ -47,8 +47,8 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 	jwtToken, err := utils.CreateJWTToken(res.UserId)
 	cookie := http.Cookie{
 		Path:    "/",
-		Domain:  viper.GetString("server.host"),
 		Name:    "jwt-token",
+		Domain:  viper.GetString("client.domainCookie"),
 		Value:   jwtToken,
 		Expires: time.Now().Add(2 * time.Hour),
 	}

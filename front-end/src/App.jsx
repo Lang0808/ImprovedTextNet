@@ -9,6 +9,7 @@ import {
 import Navbar from "./page/Navbar";
 import Login from "./page/Login";
 import Home from "./page/Home";
+import CreateBlog from './page/CreateBlog';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Navbar></Navbar>
         <Routes>
           <Route path='/login' element={<Login />} />
+          <Route path="/create-blog" element={<CreateBlog/>}/>
           <Route path="/" element={<Home/>}/>
         </Routes>
       </div>

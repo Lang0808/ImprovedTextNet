@@ -1,0 +1,8 @@
+#editor-content {
+    border: 1px solid black;
+}
+
+:empty:before {
+    content:attr(data-placeholder);
+    color:gray
+  }
