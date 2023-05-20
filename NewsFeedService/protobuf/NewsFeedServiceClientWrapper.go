@@ -1,4 +1,4 @@
-package GrpcRelationshipService
+package GrpcNewsFeedService
 
 import (
 	"context"
@@ -8,16 +8,16 @@ import (
 	"google.golang.org/grpc"
 )
 
-var client RelationshipServiceClient
+var client NewsFeedServiceClient
 
 func InitConnection() error {
-	host := viper.GetString("RelationshipService.host")
+	host := viper.GetString("NewsFeedService.host")
 	conn, err := grpc.Dial(host, grpc.WithInsecure())
 	if err != nil {
-		fmt.Printf("Cannot initialize connection to RelationshipService")
+		fmt.Printf("Cannot initialize connection to NewsFeedService")
 		return err
 	}
-	client = NewRelationshipServiceClient(conn)
+	client = NewNewsFeedServiceClient(conn)
 	return nil
 }
 

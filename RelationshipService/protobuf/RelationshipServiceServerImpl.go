@@ -2,6 +2,9 @@ package GrpcRelationshipService
 
 import (
 	context "context"
+
+	codes "google.golang.org/grpc/codes"
+	status "google.golang.org/grpc/status"
 )
 
 type RelationshipServiceServerImpl struct {
@@ -41,6 +44,10 @@ func (r RelationshipServiceServerImpl) UnfriendUser(ctx context.Context, req *Un
 
 func (r RelationshipServiceServerImpl) GetRelationship(ctx context.Context, req *GetRelationshipRequest) (*GetRelationshipResponse, error) {
 	return GetRelationship_Server(ctx, req)
+}
+
+func (r RelationshipServiceServerImpl) GetAllUserTo(context.Context, *GetAllUserToRequest) (*GetAllUserToResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "Unsupported")
 }
 
 func (r RelationshipServiceServerImpl) mustEmbedUnimplementedRelationshipServiceServer() {

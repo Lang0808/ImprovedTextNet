@@ -29,11 +29,11 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "dev": "nodemon -L -V"
+    "start": "react-scripts --openssl-legacy-provider start",
+    "build": "NODE_OPTIONS=--openssl-legacy-provider && react-scripts build",
+    "test": "NODE_OPTIONS=--openssl-legacy-provider && react-scripts test",
+    "eject": "NODE_OPTIONS=--openssl-legacy-provider && react-scripts eject",
+    "dev": "NODE_OPTIONS=--openssl-legacy-provider && nodemon -L -V"
   },
   "eslintConfig": {
     "extends": [

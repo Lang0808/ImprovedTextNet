@@ -95,6 +95,15 @@ message GetRelationshipResponse {
     repeated RelationshipType relationships=1;
 }
 
+message GetAllUserToRequest {
+    int32 UserFromId=1;
+    RelationshipType relationship=2;
+}
+
+message GetAllUserToResponse {
+    repeated int32 ListUserTo=1;
+}
+
 service RelationshipService {
     rpc SendFriendRequest (SendFriendRequestRequest) returns (SendFriendRequestResponse);
     rpc AcceptFriendRequest (AcceptFriendRequestRequest) returns (AcceptFriendRequestResponse);
@@ -105,4 +114,5 @@ service RelationshipService {
     rpc UnfollowUser (UnfollowUserRequest) returns (UnfollowUserResponse);
     rpc UnfriendUser(UnfriendUserRequest) returns (UnfriendUserResponse);
     rpc GetRelationship (GetRelationshipRequest) returns (GetRelationshipResponse);
+    rpc GetAllUserTo (GetAllUserToRequest) returns (GetAllUserToResponse);
 }

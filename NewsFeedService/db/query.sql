@@ -3,7 +3,7 @@ INSERT INTO NewsFeed (UserId, BlogId, Score)
 VALUES
 (?, ?, ?);
 
--- name: GetNewsFeed :execresult
+-- name: GetNewsFeed :many
 SELECT * FROM NewsFeed
 WHERE UserId=?
 ORDER BY Score DESC
