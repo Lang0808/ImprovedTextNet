@@ -30,6 +30,8 @@ function onChange(state) {
 }
 
 export const Editor = () => {
+  // about editor: I do a quick copy
+  // I will review it when I have time
   const initialConfig = {};
   return (
     <div className="bg-white relative rounded-sm shadow-sm border border-gray-200">
@@ -58,7 +60,7 @@ export const Editor = () => {
             <ContentEditable id="editor-content" className="outline-none py-[15px] px-2.5 resize-none text-ellipsis"/>
           }
           placeholder={
-            <div className="absolute top-[15px] left-[10px] pointer-events-none select-none">
+            <div className="absolute top-[10px] left-[10px] pointer-events-none select-none">
               Enter some text...
             </div>
           }

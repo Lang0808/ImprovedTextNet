@@ -8,8 +8,8 @@ import (
 type BlogServiceServerImpl struct {
 }
 
-func (u BlogServiceServerImpl) CreatedBlog(context.Context, *CreateBlogRequest) (*CreateBlogResponse, error) {
-	return nil, errors.New("Unsupported")
+func (u BlogServiceServerImpl) CreatedBlog(ctx context.Context, req *CreateBlogRequest) (*CreateBlogResponse, error) {
+	return CreatedBlog_Server(ctx, req)
 }
 
 func (u BlogServiceServerImpl) MultiGetBlogs(context.Context, *MultiGetBlogsRequest) (*MultiGetBlogsResponse, error) {

@@ -1,0 +1,45 @@
+syntax="proto3";
+
+option go_package="./GrpcNewsFeedService";
+
+message AddNewsFeedRequest {
+    int32 UserId=1;
+    
+}
+
+message CreateBlogResponse {
+
+}
+
+message MultiGetBlogsRequest {
+    repeated int32 BlogIds=1;
+}
+
+message Blog {
+    string Title=1;
+    PrivacyMode Privacy=2;
+    int32 Author=3;
+    string Content=4;
+    int64 CreatedTime=5;
+    int64 UpdatedTime=6;
+}
+
+message MultiGetBlogsResponse {
+    repeated Blog Blogs=1;
+}
+
+message GetBlogsOfUserRequest {
+    int32 UserId=1;
+    int32 Offset=2;
+    int32 Limit=3;
+}
+
+message GetBlogsOfUserResponse {
+    repeated Blog Blogs=1;
+}
+
+service BlogService {
+    rpc CreatedBlog(CreateBlogRequest) returns (CreateBlogResponse);
+    rpc MultiGetBlogs(MultiGetBlogsRequest) returns (MultiGetBlogsResponse);
+    rpc GetBlogsOfUser(GetBlogsOfUserRequest) returns (GetBlogsOfUserResponse);
+}

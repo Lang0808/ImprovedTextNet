@@ -38,3 +38,11 @@
   #button-container {
     margin: 10px;
   }
+
+  #select-container {
+    font-family: 'FontAwesome', 'Arial';
+  }
+
+  .option-item {
+    padding:5px;
+  }
