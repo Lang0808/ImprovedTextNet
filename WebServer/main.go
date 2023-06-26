@@ -14,14 +14,17 @@ import (
 	handler "WebServer/handler"
 
 	"github.com/spf13/viper"
+
+	LibUtils "github.com/Lang0808/libutils"
 )
 
 func initProject() (err error) {
-	err = utils.InitConfig()
+	err = LibUtils.InitConfig("config/app.yaml")
 	if err != nil {
 		fmt.Printf("Error when read config: %v", err)
 		return err
 	}
+	LibUtils.InitLogger(LibUtils.Get("projectName"))
 	return nil
 }
 

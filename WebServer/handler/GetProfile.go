@@ -16,17 +16,19 @@ type Profile struct {
 	Avatar        string
 }
 
-func GetProfile(w http.ResponseWriter, r *http.Request) {
-	AuthCookie, err := r.Cookie("jwt-token")
-	if err != nil {
-		fmt.Fprintf(w, GetApiMessage(UNAUTHORIZE_MSG))
-		return
-	}
-	UserIdFrom, err := utils.GetUserIdInJWTToken(AuthCookie.Value)
-	if err != nil {
-		fmt.Fprintf(w, GetApiMessage(UNAUTHORIZE_MSG))
-		return
-	}
+type GetProfileModel struct {
+}
+
+func (g GetProfileModel) GetSrcId(r *http.Request) (int32, error) {
+	return DefaultGetSrcId(r)
+}
+func (g GetProfileModel) GetCommandId() int32 {
+	return int32(GET_PROFILE)
+}
+
+func (g GetProfileModel) Handle(srcId int32, w http.ResponseWriter, r *http.Request,
+	extra *map[string]string) {
+	// get user id to (the owner of profile)
 	UserIdTo64, err := strconv.ParseInt(r.FormValue("UserId"), 10, 64)
 	if err != nil {
 		resp := ApiMessage{
@@ -49,9 +51,9 @@ func GetProfile(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, str)
 		return
 	}
-
+	// call RelationshipService to get relationships between SrcId and UserTo
 	request := &GrpcRelationshipService.GetRelationshipRequest{
-		UserIdFrom: UserIdFrom,
+		UserIdFrom: srcId,
 		UserIdTo:   UserIdTo,
 	}
 	relationshipsResp, err := GrpcRelationshipService.GetRelationship(context.Background(), request)
@@ -65,7 +67,6 @@ func GetProfile(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, str)
 		return
 	}
-
 	var Relationships []string
 	for i := 0; i < len(relationshipsResp.Relationships); i = i + 1 {
 		relationship := relationshipsResp.Relationships[i]
@@ -81,7 +82,7 @@ func GetProfile(w http.ResponseWriter, r *http.Request) {
 		}
 		Relationships = append(Relationships, relationship.String())
 	}
-
+	// call UserService to get UserTo info
 	req := &GrpcUserService.GetUserInfoRequest{
 		UserId: UserIdTo,
 	}
@@ -96,7 +97,6 @@ func GetProfile(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, str)
 		return
 	}
-
 	Profile := Profile{
 		Relationships: Relationships,
 		Username:      GetUserInfoResp.Username,
@@ -112,4 +112,15 @@ func GetProfile(w http.ResponseWriter, r *http.Request) {
 		Data:    Data,
 	}
 	fmt.Fprintf(w, GetApiMessage(resp))
+}
+
+func (g GetProfileModel) PostProcess(w *http.ResponseWriter, r *http.Request) {
+	DefaultPostProcess(w, r)
+}
+
+func GetProfile(w http.ResponseWriter, r *http.Request) {
+	requestHandler := RequestHandler{
+		inner: GetProfileModel{},
+	}
+	requestHandler.process(w, r)
 }

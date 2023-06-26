@@ -9,17 +9,19 @@ import (
 	"strconv"
 )
 
-func BlockUser(w http.ResponseWriter, r *http.Request) {
-	AuthCookie, err := r.Cookie("jwt-token")
-	if err != nil {
-		fmt.Fprintf(w, GetApiMessage(UNAUTHORIZE_MSG))
-		return
-	}
-	UserIdFrom, err := utils.GetUserIdInJWTToken(AuthCookie.Value)
-	if err != nil {
-		fmt.Fprintf(w, GetApiMessage(UNAUTHORIZE_MSG))
-		return
-	}
+type BlockUserModel struct {
+}
+
+func (b BlockUserModel) GetSrcId(r *http.Request) (int32, error) {
+	return DefaultGetSrcId(r)
+}
+
+func (b BlockUserModel) GetCommandId() int32 {
+	return int32(BLOCK_USER)
+}
+
+func (b BlockUserModel) Handle(srcId int32, w http.ResponseWriter, r *http.Request,
+	extra *map[string]string) {
 	UserIdTo64, err := strconv.ParseInt(r.FormValue("UserId"), 10, 64)
 	if err != nil {
 		resp := ApiMessage{
@@ -42,9 +44,8 @@ func BlockUser(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, str)
 		return
 	}
-
 	request := &GrpcRelationshipService.BlockUserRequest{
-		UserIdFrom: UserIdFrom,
+		UserIdFrom: srcId,
 		UserIdTo:   UserIdTo,
 	}
 	_, err = GrpcRelationshipService.BlockUser(context.Background(), request)
@@ -59,4 +60,15 @@ func BlockUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	fmt.Fprintf(w, GetApiMessage(SUCCESS_MSG))
+}
+
+func (b BlockUserModel) PostProcess(w *http.ResponseWriter, r *http.Request) {
+
+}
+
+func BlockUser(w http.ResponseWriter, r *http.Request) {
+	requestHandler := RequestHandler{
+		inner: BlockUserModel{},
+	}
+	requestHandler.process(w, r)
 }

@@ -9,17 +9,19 @@ import (
 	"strconv"
 )
 
-func UnblockUser(w http.ResponseWriter, r *http.Request) {
-	AuthCookie, err := r.Cookie("jwt-token")
-	if err != nil {
-		fmt.Fprintf(w, GetApiMessage(UNAUTHORIZE_MSG))
-		return
-	}
-	UserIdFrom, err := utils.GetUserIdInJWTToken(AuthCookie.Value)
-	if err != nil {
-		fmt.Fprintf(w, GetApiMessage(UNAUTHORIZE_MSG))
-		return
-	}
+type UnblockUserModel struct {
+}
+
+func (u UnblockUserModel) GetSrcId(r *http.Request) (int32, error) {
+	return DefaultGetSrcId(r)
+}
+
+func (u UnblockUserModel) GetCommandId() int32 {
+	return int32(UNBLOCK_USER)
+}
+
+func (u UnblockUserModel) Handle(srcId int32, w http.ResponseWriter, r *http.Request,
+	extra *map[string]string) {
 	UserIdTo64, err := strconv.ParseInt(r.FormValue("UserId"), 10, 64)
 	if err != nil {
 		resp := ApiMessage{
@@ -42,9 +44,8 @@ func UnblockUser(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, str)
 		return
 	}
-
 	request := &GrpcRelationshipService.UnblockUserRequest{
-		UserIdFrom: UserIdFrom,
+		UserIdFrom: srcId,
 		UserIdTo:   UserIdTo,
 	}
 	_, err = GrpcRelationshipService.UnblockUser(context.Background(), request)
@@ -59,4 +60,15 @@ func UnblockUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	fmt.Fprintf(w, GetApiMessage(SUCCESS_MSG))
+}
+
+func (u UnblockUserModel) PostProcess(w *http.ResponseWriter, r *http.Request) {
+	DefaultPostProcess(w, r)
+}
+
+func UnblockUser(w http.ResponseWriter, r *http.Request) {
+	requestHandler := RequestHandler{
+		inner: UnblockUserModel{},
+	}
+	requestHandler.process(w, r)
 }

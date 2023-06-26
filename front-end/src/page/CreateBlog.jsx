@@ -43,6 +43,8 @@ function CreateBlog(props){
         for(var i =0;i<listChildNodes.length;i++){
             html+=listChildNodes[i].outerHTML
         }
+
+        console.log(html)
         
         // step 3: create form data, submit
         var data = new FormData();
@@ -67,6 +69,7 @@ function CreateBlog(props){
             }
             else{
                 // otherwise, success
+                toast("SUCCESS !!!")
             }
         })
         .catch(function (error) {
@@ -81,6 +84,23 @@ function CreateBlog(props){
 
     function changePrivacy(e){
         setPrivacy(e.target.value)
+    }
+
+    function changeContent(e){
+        console.log("on change call")
+        var listChildNodes=document.getElementById("editor-content").childNodes
+
+        // step 2: concatenate all child nodes data
+        var html=""
+        for(var i =0;i<listChildNodes.length;i++){
+            html+=listChildNodes[i].outerHTML
+        }
+
+        console.log(html)
+
+
+        document.getElementById("display-content").innerHTML=html
+
     }
 
     // create option for select "privacy"
@@ -107,9 +127,16 @@ function CreateBlog(props){
             <div className="privacy-container">
                 {options}
             </div>
-            <div className="max-w-[800px] mx-4 mt-2 mb">
-                <Editor/>
+            <div className="content-container">
+                <div className="max-w-[800px] mx-4 mt-2 mb editor-container">
+                    <Editor onChange={changeContent} />
+                </div>
+                <div className="display">
+                    <div className="display-title">{title}</div>
+                    <div className="display-content" id="display-content"></div>
+                </div>
             </div>
+            
             <div id="button-container">
                 <button className="button-89" role="button" onClick={onSubmit} id="register">Create blog</button>
                 <ToastContainer/>

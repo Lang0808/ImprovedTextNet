@@ -20,16 +20,20 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBold, faItalic, faStrikethrough, faUnderline, faAlignLeft, faAlignRight, faAlignCenter, faAlignJustify, faRotateLeft, faRotateRight, faRotate } from '@fortawesome/free-solid-svg-icons';
 import "./Editor.css";
 
-function onChange(state) {
-  state.read(() => {
-    const root = $getRoot();
-    const selection = $getSelection();
 
-    console.log(selection);
-  });
-}
+export const Editor = (props) => {
 
-export const Editor = () => {
+  function onChange(state) {
+    props.onChange()
+    state.read(() => {
+      const root = $getRoot();
+      const selection = $getSelection();
+  
+      console.log(selection);
+    });
+  }
+  
+
   // about editor: I do a quick copy
   // I will review it when I have time
   const initialConfig = {};
@@ -54,17 +58,13 @@ export const Editor = () => {
           },
         }}
       >
-        <Toolbar />
+        
         <RichTextPlugin
           contentEditable={
             <ContentEditable id="editor-content" className="outline-none py-[15px] px-2.5 resize-none text-ellipsis"/>
           }
-          placeholder={
-            <div className="absolute top-[10px] left-[10px] pointer-events-none select-none">
-              Enter some text...
-            </div>
-          }
         />
+        <Toolbar />
         <OnChangePlugin onChange={onChange} />
         <HistoryPlugin />
       </LexicalComposer>
@@ -101,7 +101,7 @@ const Toolbar = () => {
   }, [updateToolbar, editor]);
 
   return (
-    <div className="fixed z-20 shadow bottom-8 left-1/2 transform -translate-x-1/2 min-w-52 h-10 px-2 py-2 bg-[#1b2733] mb-4 space-x-2 flex items-center">
+    <div className="absolute z-20 shadow bottom--10 left-1/2 transform -translate-x-1/2 min-w-52 h-10 px-2 py-2 bg-[#1b2733] mb-4 space-x-2 flex items-center">
       <button
         className={clsx(
           'px-1 hover:bg-gray-700 transition-colors duration-100 ease-in',

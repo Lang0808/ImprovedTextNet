@@ -9,17 +9,19 @@ import (
 	"strconv"
 )
 
-func SendFriendRequest(w http.ResponseWriter, r *http.Request) {
-	AuthCookie, err := r.Cookie("jwt-token")
-	if err != nil {
-		fmt.Fprintf(w, GetApiMessage(UNAUTHORIZE_MSG))
-		return
-	}
-	UserIdFrom, err := utils.GetUserIdInJWTToken(AuthCookie.Value)
-	if err != nil {
-		fmt.Fprintf(w, GetApiMessage(UNAUTHORIZE_MSG))
-		return
-	}
+type SendFriendRequestModel struct {
+}
+
+func (s SendFriendRequestModel) GetSrcId(r *http.Request) (int32, error) {
+	return DefaultGetSrcId(r)
+}
+
+func (s SendFriendRequestModel) GetCommandId() int32 {
+	return int32(SEND_FRIEND_REQUEST)
+}
+
+func (s SendFriendRequestModel) Handle(srcId int32, w http.ResponseWriter, r *http.Request,
+	extra *map[string]string) {
 	UserIdTo64, err := strconv.ParseInt(r.FormValue("UserId"), 10, 64)
 	if err != nil {
 		resp := ApiMessage{
@@ -42,9 +44,8 @@ func SendFriendRequest(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, str)
 		return
 	}
-
 	request := &GrpcRelationshipService.SendFriendRequestRequest{
-		UserIdFrom: UserIdFrom,
+		UserIdFrom: srcId,
 		UserIdTo:   UserIdTo,
 	}
 	_, err = GrpcRelationshipService.SendFriendRequest(context.Background(), request)
@@ -59,4 +60,15 @@ func SendFriendRequest(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	fmt.Fprintf(w, GetApiMessage(SUCCESS_MSG))
+}
+
+func (s SendFriendRequestModel) PostProcess(w *http.ResponseWriter, r *http.Request) {
+	DefaultPostProcess(w, r)
+}
+
+func SendFriendRequest(w http.ResponseWriter, r *http.Request) {
+	requestHandler := RequestHandler{
+		inner: SendFriendRequestModel{},
+	}
+	requestHandler.process(w, r)
 }

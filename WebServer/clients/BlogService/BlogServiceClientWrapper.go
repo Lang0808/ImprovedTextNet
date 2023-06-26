@@ -4,14 +4,15 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/spf13/viper"
 	"google.golang.org/grpc"
+
+	LibUtils "github.com/Lang0808/libutils"
 )
 
 var client BlogServiceClient
 
 func InitConnection() error {
-	host := viper.GetString("BlogService.host")
+	host := LibUtils.Get("BlogService.host")
 	conn, err := grpc.Dial(host, grpc.WithInsecure())
 	if err != nil {
 		fmt.Printf("Cannot initialize connection to UserService")

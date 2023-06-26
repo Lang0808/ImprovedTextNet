@@ -9,17 +9,19 @@ import (
 	"strconv"
 )
 
-func UnfriendUser(w http.ResponseWriter, r *http.Request) {
-	AuthCookie, err := r.Cookie("jwt-token")
-	if err != nil {
-		fmt.Fprintf(w, GetApiMessage(UNAUTHORIZE_MSG))
-		return
-	}
-	UserIdFrom, err := utils.GetUserIdInJWTToken(AuthCookie.Value)
-	if err != nil {
-		fmt.Fprintf(w, GetApiMessage(UNAUTHORIZE_MSG))
-		return
-	}
+type UnfriendUserModel struct {
+}
+
+func (u UnfriendUserModel) GetSrcId(r *http.Request) (int32, error) {
+	return DefaultGetSrcId(r)
+}
+
+func (u UnfriendUserModel) GetCommandId() int32 {
+	return int32(UNFRIEND_USER)
+}
+
+func (u UnfriendUserModel) Handle(srcId int32, w http.ResponseWriter, r *http.Request,
+	extra *map[string]string) {
 	UserIdTo64, err := strconv.ParseInt(r.FormValue("UserId"), 10, 64)
 	if err != nil {
 		resp := ApiMessage{
@@ -42,9 +44,8 @@ func UnfriendUser(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, str)
 		return
 	}
-
 	request := &GrpcRelationshipService.UnfriendUserRequest{
-		UserIdFrom: UserIdFrom,
+		UserIdFrom: srcId,
 		UserIdTo:   UserIdTo,
 	}
 	_, err = GrpcRelationshipService.UnfriendUser(context.Background(), request)
@@ -59,4 +60,15 @@ func UnfriendUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	fmt.Fprintf(w, GetApiMessage(SUCCESS_MSG))
+}
+
+func (u UnfriendUserModel) PostProcess(w *http.ResponseWriter, r *http.Request) {
+	DefaultPostProcess(w, r)
+}
+
+func UnfriendUser(w http.ResponseWriter, r *http.Request) {
+	requestHandler := RequestHandler{
+		inner: UnfriendUserModel{},
+	}
+	requestHandler.process(w, r)
 }

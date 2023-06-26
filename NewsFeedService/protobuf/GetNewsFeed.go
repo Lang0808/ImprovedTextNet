@@ -23,5 +23,4 @@ func GetNewsFeed_Server(ctx context.Context, req *GetNewsFeedRequest) (*GetNewsF
 		listBlogId = append(listBlogId, listNewsFeed[i].Blogid)
 	}
 	return &GetNewsFeedResponse{BlogId: listBlogId}, nil
-
 }

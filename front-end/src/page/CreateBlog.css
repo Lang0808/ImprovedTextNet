@@ -36,7 +36,10 @@
   }
 
   #button-container {
-    margin: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 50px;
   }
 
   #select-container {
@@ -45,4 +48,26 @@
 
   .option-item {
     padding:5px;
+  }
+
+  .content-container {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .display {
+    flex: 1 0 50%;
+    white-space: nowrap;
+    box-sizing: border-box;
+  }
+
+  .editor-container {
+    flex: 1 0 50%;
+    white-space: nowrap;
+    box-sizing: border-box;
+  }
+
+  .display-title {
+    font-weight: bold;
+    text-align: center;
   }

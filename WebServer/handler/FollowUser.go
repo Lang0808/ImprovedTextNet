@@ -9,17 +9,19 @@ import (
 	"strconv"
 )
 
-func FollowUser(w http.ResponseWriter, r *http.Request) {
-	AuthCookie, err := r.Cookie("jwt-token")
-	if err != nil {
-		fmt.Fprintf(w, GetApiMessage(UNAUTHORIZE_MSG))
-		return
-	}
-	UserIdFrom, err := utils.GetUserIdInJWTToken(AuthCookie.Value)
-	if err != nil {
-		fmt.Fprintf(w, GetApiMessage(UNAUTHORIZE_MSG))
-		return
-	}
+type FollowUserModel struct {
+}
+
+func (f FollowUserModel) GetSrcId(r *http.Request) (int32, error) {
+	return DefaultGetSrcId(r)
+}
+
+func (f FollowUserModel) GetCommandId() int32 {
+	return int32(FOLLOW_USER)
+}
+
+func (f FollowUserModel) Handle(srcId int32, w http.ResponseWriter, r *http.Request,
+	extra *map[string]string) {
 	UserIdTo64, err := strconv.ParseInt(r.FormValue("UserId"), 10, 64)
 	if err != nil {
 		resp := ApiMessage{
@@ -42,9 +44,8 @@ func FollowUser(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, str)
 		return
 	}
-
 	request := &GrpcRelationshipService.FollowUserRequest{
-		UserIdFrom: UserIdFrom,
+		UserIdFrom: srcId,
 		UserIdTo:   UserIdTo,
 	}
 	_, err = GrpcRelationshipService.FollowUser(context.Background(), request)
@@ -59,4 +60,15 @@ func FollowUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	fmt.Fprintf(w, GetApiMessage(SUCCESS_MSG))
+}
+
+func (f FollowUserModel) PostProcess(w *http.ResponseWriter, r *http.Request) {
+
+}
+
+func FollowUser(w http.ResponseWriter, r *http.Request) {
+	requestHandler := RequestHandler{
+		inner: FollowUserModel{},
+	}
+	requestHandler.process(w, r)
 }

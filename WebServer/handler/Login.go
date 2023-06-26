@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/spf13/viper"
+	LibUtils "github.com/Lang0808/libutils"
 )
 
 type LoginResponse struct {
@@ -16,18 +16,27 @@ type LoginResponse struct {
 	Avatar   string
 }
 
-func LoginUser(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Credentials", "true")
-	w.Header().Set("Access-Control-Allow-Origin", viper.GetString("client.domain"))
-	w.Header().Set("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,UPDATE,OPTIONS")
-	w.Header().Set("Access-Control-Allow-Headers", "content-type")
+type LoginUserModel struct {
+}
 
+func (l LoginUserModel) GetSrcId(r *http.Request) (int32, error) {
+	return -1, nil
+}
+
+func (l LoginUserModel) GetCommandId() int32 {
+	return int32(LOGIN)
+}
+
+func (l LoginUserModel) Handle(srcId int32, w http.ResponseWriter, r *http.Request,
+	extra *map[string]string) {
+	// Get username and password
 	Username := r.FormValue("Username")
 	Password := r.FormValue("Password")
 	in := &GrpcUserService.LoginUserRequest{
 		Username: Username,
 		Password: Password,
 	}
+	// call UserService to verify username and password
 	res, err := GrpcUserService.LoginUser(context.Background(), in)
 	var resp ApiMessage
 	if err != nil {
@@ -44,15 +53,15 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 		Username: res.Username,
 		Avatar:   res.Avatar,
 	}
+	// create cookie JWT and set cookie
 	jwtToken, err := utils.CreateJWTToken(res.UserId)
 	cookie := http.Cookie{
 		Path:    "/",
 		Name:    "jwt-token",
-		Domain:  viper.GetString("client.domainCookie"),
+		Domain:  LibUtils.Get("client.domainCookie"),
 		Value:   jwtToken,
 		Expires: time.Now().Add(2 * time.Hour),
 	}
-
 	http.SetCookie(w, &cookie)
 	Data, err := utils.Marshal(data)
 	if err != nil {
@@ -64,4 +73,15 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 		Data:    Data,
 	}
 	fmt.Fprintf(w, GetApiMessage(resp))
+}
+
+func (l LoginUserModel) PostProcess(w *http.ResponseWriter, r *http.Request) {
+	DefaultPostProcess(w, r)
+}
+
+func LoginUser(w http.ResponseWriter, r *http.Request) {
+	requestHandler := RequestHandler{
+		inner: LoginUserModel{},
+	}
+	requestHandler.process(w, r)
 }
