@@ -20,6 +20,10 @@ func (u BlogServiceServerImpl) GetBlogsOfUser(context.Context, *GetBlogsOfUserRe
 	return nil, errors.New("Unsupported")
 }
 
+func (u BlogServiceServerImpl) GetUserBlogsWithRelationships(context.Context, *GetUserBlogsWithRelationshipsRequest) (*GetBlogsOfUserResponse, error) {
+	return nil, errors.New("Unsupported")
+}
+
 func (u BlogServiceServerImpl) mustEmbedUnimplementedBlogServiceServer() {
 
 }

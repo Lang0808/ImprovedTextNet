@@ -3,7 +3,7 @@ module WebServer
 go 1.18
 
 require (
-	github.com/Lang0808/libutils v0.1.7
+	github.com/Lang0808/libutils v0.1.9
 	github.com/golang-jwt/jwt/v4 v4.5.0
 	github.com/spf13/viper v1.16.0
 	golang.org/x/crypto v0.10.0

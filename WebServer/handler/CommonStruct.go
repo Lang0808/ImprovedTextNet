@@ -20,3 +20,12 @@ func GetApiMessage(api ApiMessage) string {
 	}
 	return res
 }
+
+func GetApiMessageWithErrorCode(ErrorCode int32, err error) string {
+	api := ApiMessage{
+		Err:     ErrorCode,
+		Message: err.Error(),
+		Data:    "",
+	}
+	return GetApiMessage(api)
+}

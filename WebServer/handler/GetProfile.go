@@ -19,11 +19,27 @@ type Profile struct {
 type GetProfileModel struct {
 }
 
+type GetProfileParams struct {
+	UserId int32
+}
+
 func (g GetProfileModel) GetSrcId(r *http.Request) (int32, error) {
 	return DefaultGetSrcId(r)
 }
 func (g GetProfileModel) GetCommandId() int32 {
 	return int32(GET_PROFILE)
+}
+
+func GetUserId(EncodedUserId string) (int32, error) {
+	UserId64, err := strconv.ParseInt(EncodedUserId, 10, 64)
+	if err != nil {
+		return 0, err
+	}
+	UserId, err := utils.DenoiseUserId(UserId64)
+	if err != nil {
+		return 0, err
+	}
+	return UserId, nil
 }
 
 func (g GetProfileModel) Handle(srcId int32, w http.ResponseWriter, r *http.Request,

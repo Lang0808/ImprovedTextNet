@@ -46,8 +46,16 @@ message GetBlogsOfUserResponse {
     repeated Blog Blogs=1;
 }
 
+message GetUserBlogsWithRelationshipsRequest {
+    int32 UserId=1;
+    int32 Offset=2;
+    int32 Limit=3;
+    int32 Relationship=4;
+}
+
 service BlogService {
     rpc CreatedBlog(CreateBlogRequest) returns (CreateBlogResponse);
     rpc MultiGetBlogs(MultiGetBlogsRequest) returns (MultiGetBlogsResponse);
     rpc GetBlogsOfUser(GetBlogsOfUserRequest) returns (GetBlogsOfUserResponse);
+    rpc GetUserBlogsWithRelationships(GetUserBlogsWithRelationshipsRequest) returns (GetBlogsOfUserResponse);
 }
