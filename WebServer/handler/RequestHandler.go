@@ -38,8 +38,8 @@ func (h *RequestHandler) process(w http.ResponseWriter, r *http.Request) {
 	h.inner.Handle(srcId, w, r, &logEntry.Extra)
 
 	endTime := time.Now().UnixMilli()
-	fmt.Printf("endTime = %v, startTime = %v\n", endTime, startTime)
-	// logEntry.ExecTime = int32(endTime - startTime)
+	// fmt.Printf("endTime = %v, startTime = %v\n", endTime, startTime)
+	logEntry.ExecTime = int32(endTime - startTime)
 	LibUtils.Info_entry("handler", "process", logEntry)
 }
 

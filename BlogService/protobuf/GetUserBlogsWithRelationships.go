@@ -1,7 +1,14 @@
 package GrpcBlogService
 
-import "context"
+import (
+	"context"
+	"errors"
+)
 
-func GetUserBlogsWithRelationships_Server(ctx context.Context, req *GetUserBlogsWithRelationshipsRequest) (*GetBlogsOfUserResponse, error) {
+type GetUserBlogsWithRelationshipsModel struct {
+}
 
+func GetUserBlogsWithRelationships_Server(ctx context.Context,
+	req *GetUserBlogsWithRelationshipsRequest, extra *map[string]string) (*GetBlogsOfUserResponse, error) {
+	return nil, errors.New("Unsupported")
 }
