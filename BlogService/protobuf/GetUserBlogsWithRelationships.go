@@ -5,10 +5,11 @@ import (
 	"errors"
 )
 
-type GetUserBlogsWithRelationshipsModel struct {
-}
-
 func GetUserBlogsWithRelationships_Server(ctx context.Context,
 	req *GetUserBlogsWithRelationshipsRequest, extra *map[string]string) (*GetBlogsOfUserResponse, error) {
+	for relationship := range req.Relationship {
+
+	}
+
 	return nil, errors.New("Unsupported")
 }
