@@ -12,11 +12,10 @@ type RequestHandler struct {
 
 type RequestHandlerInterface interface {
 	GetCommandId() int32
+
 }
 
 func (r RequestHandler) process(ctx context.Context, req *interface{}) (*interface{}, error) {
-	logEntry := LibUtils.LogEntry{}
-	logEntry.CommandId = r.inner.GetCommandId()
-	logEntry.SrcId = -1
-	logEntry.Extra = make(map[string]string)
+	
+
 }
