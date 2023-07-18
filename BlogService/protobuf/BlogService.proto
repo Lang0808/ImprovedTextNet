@@ -50,7 +50,7 @@ message GetUserBlogsWithRelationshipsRequest {
     int32 UserId=1;
     int32 Offset=2;
     int32 Limit=3;
-    int32 Relationship=4;
+    repeated int32 Relationship=4;
 }
 
 service BlogService {
